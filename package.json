@@ -1,0 +1,22 @@
+{
+  "name": "crown-star-backend",
+  "version": "1.0.0",
+  "description": "Backend for a project that connects grassroot potenial footballers with scouts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abojeEdwin/Crown-Star.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abojeEdwin/Crown-Star/issues"
+  },
+  "homepage": "https://github.com/abojeEdwin/Crown-Star#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
