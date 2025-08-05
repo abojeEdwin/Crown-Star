@@ -1,41 +1,41 @@
-const {coachRepository} = require('../repository/coachRepository')
-const {playerRepository} = require('../repository/playerRepository')
-const {scoutRepository} = require('../repository/scoutRepository')
-const {Coach} = require('../models/Coach')
+const sequelize = require("../config/database");
+const { DataTypes } = require('sequelize');
+const {Scout} = require("../models/Scout")(sequelize, DataTypes);
+const {Coach} = require('../models/Coach')(sequelize, DataTypes);
+const {Player} = require('../models/Player')(sequelize, DataTypes);
 
 
-const createCoach = async (coach) => {
-    return Coach.create(coach)
-}
-const updateCoach = async (coach) => {
-    return Coach.update(coach)
-}
-const findCoachById = async (id) => {
-    return Coach.findById(id)
-}
-const findAll = async () => {
-    return Coach.findAll()
-}
-const findPlayerById = async (playerId) => {
-    return playerRepository.findById(playerId)
-}
-const findScoutById = async (id) => {
-    return scoutRepository.findById(id)
-}
-const findAllScout = async () =>{
-    return scoutRepository.findAll()
-}
-const findAllPlayer = async () =>{
-    return playerRepository.findAll()
+class CoachRepository{
+
+    async createCoach(coachData){
+        return await Coach.create(coachData);
+    }
+    async updateCoach(coachData){
+        return await Coach.update(coachData);
+    }
+    async findCoachById(id){
+        return await Coach.findById(id);
+    }
+    async findAllCoach(){
+        return await Coach.findAll();
+    }
+    async findPlayerById(playerId){
+        return await Player.findById(playerId);
+    }
+    async findAllScout(){
+        return await Scout.findAll();
+    }
+    async findAllPlayerById(id){
+        return await Player.findById(id);
+    }
+    async findScoutById(id){
+        return await Scout.findById(id);
+    }
+    async findAllPlayers(){
+        return await Player.findAll();
+    }
 }
 
 module.exports = {
-    createCoach,
-    updateCoach,
-    findCoachById,
-    findAll,
-    findPlayerById,
-    findScoutById,
-    findAllScout,
-    findAllPlayer,
-}
+   coachRepository: new CoachRepository()
+};

@@ -1,31 +1,28 @@
-const {Scout} = require('../models/Scout');
-const {playerRepository} = require('../repository/playerRepository');
-const {scout} = require('../repository/scoutRepository');
-const scoutRepository = require("./coachRepository");
+const sequelize = require('../config/database');
+const { DataTypes } = require('sequelize');
+const Scout = require('../models/Scout')(sequelize, DataTypes);
+const Player = require('../models/Player')(sequelize, DataTypes);
 
-const createScout = async (Scout) => {
-    return Scout.create(Scout)
+class ScoutRepository{
+     async createScout(scoutData){
+         return await Scout.create(scoutData);
+     }
+     async findByEmail(email){
+         return await Scout.findOne({where: {email}});
+     }
+     async updateScout(id,scoutData){
+         return await Scout.update(id,scoutData);
+     }
+     async findAllScout(){
+         return await Scout.findAll();
+     }
+     async findScoutById(id){
+         return await Scout.findById(id);
+     }
+     async findAllPlayers(){
+         return await Player.findAll();
+     }
 }
-const updateScout = async (ScoutId, Scout) => {
-    return Scout.update(ScoutId, Scout)
-}
-const findScoutById = async (id) => {
-    return findScoutById(id)
-}
-const findAllScout = async () => {
-    return Scout.findAll()
-}
-const findAllPlayer = async () => {
-    return playerRepository.findAll()
-}
-const findAll = async () => {
-    return scoutRepository.findAll()
-}
-
 module.exports = {
-    findAllPlayer,
-    createScout,
-    updateScout,
-    findScoutById,
-    findAllScout,
-}
+   scoutRepository : new ScoutRepository()
+};

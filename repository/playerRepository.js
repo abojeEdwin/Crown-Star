@@ -1,41 +1,41 @@
-const {Player} = require('../models/Player');
-const {scoutRepository} = require('./scoutRepository');
-const {coachRepository} = require('./coachRepository');
-const {Scout} = require("../models/Scout");
+const sequelize = require('../config/database');
+const { DataTypes } = require('sequelize');
+const {Scout} = require("../models/Scout")(sequelize, DataTypes);
+const {Player} = require('../models/Player')(sequelize, DataTypes);
+const {Coach} = require('../models/Coach')(sequelize, DataTypes);
 
-const createPlayer = async (player) => {
-    return Player.create(player)
+class PlayerRepository{
+    async findByUsername(username) {
+        return await Player.findOne({ where: { username } });
+    }
+    async create(playerData) {
+        return await Player.create(playerData);
+    }
+    async getPlayer(id){
+        return await Player.findById(id);
+    }
+    async updatePlayer(id, playerData){
+        return await Player.update(id, playerData);
+    }
+    async findAllPlayer(){
+        return await Player.findAll();
+    }
+    async viewScouts(){
+        return await Scout.findAll();
+    }
+    async viewScoutById(id){
+        return await Scout.findById(id);
+    }
+    async viewAllCoaches(){
+        return await Coach.findAll();
+    }
+    async viewCoachById(id){
+        return await Coach.findById(id);
+    }
 }
-const getPlayer = async (id) => {
-    return Player.findById(id)
-}
-const updatePlayer = async (id, player) => {
-    return Player.update(id, player)
-}
-const findAllPlayers = async () => {
-    return Player.findAll()
-}
-const viewScouts = async () => {
- return scoutRepository.findAll()
-}
-const viewScoutById = async (id) => {
-    return Scout.findById(id)
-}
-const viewAllCoaches = async () => {
-    return coachRepository.findAll()
-}
-const viewCoachById = async (id) => {
-    return coachRepository.findById(id)
-}
+
 
 module.exports = {
-    createPlayer,
-    getPlayer,
-    updatePlayer,
-    findAllPlayers,
-    viewScouts,
-    viewScoutById,
-    viewAllCoaches,
-    viewCoachById,
-}
+   playerRepository: new PlayerRepository()
+};
 
