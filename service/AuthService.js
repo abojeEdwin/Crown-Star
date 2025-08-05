@@ -23,27 +23,29 @@ const registerUser = async (req,res) => {
     }
 };
 
-export const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!isValidEmail(email)) return res.code(400).send({ message: 'Invalid email format' });
+const loginUser = async (req, res) => {
+    const {email, password} = req.body;
+    if (!isValidEmail(email)) return res.code(400).send({message: 'Invalid email format'});
     try {
-        const user = await userRepository.findOne({ email });
-        if (!req.user) res.code(404).send({ message: 'User not found' });
+        const user = await userRepository.findOne({email});
+        if (!req.user) res.code(404).send({message: 'User not found'});
         const isPasswordValid = await comparePassword(password);
-        if (!isPasswordValid) return res.code(401).send({ message: 'Invalid password' });
-        const foundUser = await userRepository.findOne({ email });
-        if (!foundUser) res.code(401).send({ message: 'Invalid email format' });
+        if (!isPasswordValid) return res.code(401).send({message: 'Invalid password'});
+        const foundUser = await userRepository.findOne({email});
+        if (!foundUser) res.code(401).send({message: 'Invalid email format'});
         const token = generateToken(req.user.id);
         res.code(201).send({
             message: 'Login successful',
             success: true,
             token,
-            user:{userId: foundUser.id, role: foundUser.role, email: foundUser.email}
+            user: {userId: foundUser.id, role: foundUser.role, email: foundUser.email}
         })
     } catch (error) {
         console.error('Error during login:', error);
-        res.code(500).send({ message: 'Internal server error' });
+        res.code(500).send({message: 'Internal server error'});
     }
 }
+
+module.exports = {registerUser, loginUser};
 
 
