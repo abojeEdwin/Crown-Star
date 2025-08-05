@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true,
             }
         },
+        username :{
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         position: {
             type: DataTypes.STRING,
             allowNull: true
