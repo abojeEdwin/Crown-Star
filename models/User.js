@@ -1,4 +1,6 @@
+const {Roles} = require("./Roles");
 module.exports = (sequelize, DataTypes) => {
+    const Coach = require('./../models/Coach');
 
     const User = sequelize.define('User', {
         id: {
@@ -23,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         role: {
-            type: DataTypes.ENUM('coach', 'player', 'scout'),
+            type: Roles.USER,
             allowNull: false,
             defaultValue: 'user',
         },
@@ -35,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: 'createdAt',
     });
 
+
+
     User.associate = (models) => {
+
         User.hasOne(models.Coach, { foreignKey: 'userId', as: 'coach', onDelete: 'CASCADE' });
         User.hasOne(models.Player, { foreignKey: 'userId', as: 'player', onDelete: 'CASCADE' });
         User.hasOne(models.Scout, { foreignKey: 'userId', as: 'scout',onDelete: 'CASCADE' });

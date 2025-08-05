@@ -1,3 +1,4 @@
+const {Roles} = require("./Roles");
 module.exports = (sequelize, DataTypes) => {
 
     const Coach = sequelize.define('Coach', {
@@ -38,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
         bio:{
             type: DataTypes.STRING,
             allowNull: true
+        },
+        role:{
+            type: Roles.COACH
         },
         dob:{
             type: DataTypes.DATE,
