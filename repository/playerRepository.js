@@ -1,7 +1,7 @@
 const {Player} = require('../models/Player');
-const {scoutRepository} = require('../repository/scoutRepository');
-const {coachRepository} = require('../repository/coachRepository');
-const {Scout} = require("./userRepository");
+const {scoutRepository} = require('./scoutRepository');
+const {coachRepository} = require('./coachRepository');
+const {Scout} = require("../models/Scout");
 
 const createPlayer = async (player) => {
     return Player.create(player)

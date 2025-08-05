@@ -1,23 +1,27 @@
-const {User} = require('../models/User');
+const sequelize = require('../config/database');
+const { DataTypes } = require('sequelize');
+const User = require('../models/User')(sequelize, DataTypes);
 
-const createUser = async (user) => {
-    return User.create(user)
+class UserRepository {
+    async createUser(userData) {
+        return await User.create(userData);
+    }
+
+    async findByEmail(email) {
+        return await User.findOne({ where: { email } });
+    }
+
+    async findByUsername(username) {
+        return await User.findOne({ where: { username } });
+    }
+
+    async findById(id) {
+        return await User.findByPk(id, {
+            attributes: { exclude: ['password'] },
+        });
+    }
 }
-const findByEmail = async (email) => {
-    return User.findOne({where: {email} });
-}
-const findByUsername = async (username) => {
-    return User.findOne({where: {username}});
-}
-const findById = async (id) => {
-    return User.findByPk(id,{
-        attributes: {exclude: ['password']},
-    });
-};
 
 module.exports = {
-    createUser,
-    findByEmail,
-    findById,
-    findByUsername
+    userRepository: new UserRepository()
 };

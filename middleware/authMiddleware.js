@@ -15,4 +15,4 @@ export const authenticate = async (req, reply) => {
     }
 };
 
-module.exports = authenticate;
+module.exports = {authenticate};

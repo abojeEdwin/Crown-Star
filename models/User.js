@@ -1,50 +1,36 @@
 const {Roles} = require("./Roles");
 module.exports = (sequelize, DataTypes) => {
-    const Coach = require('./../models/Coach');
-
-    const User = sequelize.define('User', {
+    return sequelize.define('User', {
         id: {
             type: DataTypes.UUID,
-            allowNull: false,
-            primaryKey: true,
-            validate: {
-                notEmpty: true
-            }
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
         },
         email: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: false,
-            validate: { isEmail: true },
+            unique: true
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                password: true
-            }
+            allowNull: false
         },
         role: {
-            type: Roles.USER,
+            type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'user',
+            defaultValue: Roles.USER,
+            validate: {
+                isIn: [[Roles.USER, Roles.COACH, Roles.PLAYER, Roles.SCOUT]]
+            }
         },
 
-    }, {
-        tableName: 'users',
-        timestamps: true,
-        updatedAt: 'updatedAt',
-        createdAt: 'createdAt',
-    });
-
-
-
-    User.associate = (models) => {
-
-        User.hasOne(models.Coach, { foreignKey: 'userId', as: 'coach', onDelete: 'CASCADE' });
-        User.hasOne(models.Player, { foreignKey: 'userId', as: 'player', onDelete: 'CASCADE' });
-        User.hasOne(models.Scout, { foreignKey: 'userId', as: 'scout',onDelete: 'CASCADE' });
-    };
-
-    return User;
+    },
+        {
+            tableName: 'users',
+            timestamps: true,
+            updatedAt: 'updatedAt',
+            createdAt: 'createdAt',
+        }
+    );
 };
+

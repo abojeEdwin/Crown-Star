@@ -38,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
         }
-
     },
         {
             tableName: 'scout',

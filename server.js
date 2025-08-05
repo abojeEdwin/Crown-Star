@@ -16,6 +16,7 @@ app.use(express.json());
 const userController = require('./controller/authController');
 
 app.use('/api/users', userRoutes(userController));
+app.use(express.urlencoded({ extended: true }));
 
 // Health check
 app.get('/', (_req, res) => res.send('🚀 Task Manager API is running...'));
@@ -24,7 +25,7 @@ app.get('/', (_req, res) => res.send('🚀 Task Manager API is running...'));
 const PORT = process.env.PORT
 sequelize.authenticate()
     .then(() => {
-        console.log('✅ Connected to PostgresSQL server');
+        console.log('✅ Connected to Mysql server');
         return sequelize.sync();
     })
     .then(() => {
