@@ -41,7 +41,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         role:{
-            type: Roles.COACH
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: Roles.COACH,
         },
         dob:{
             type: DataTypes.DATE,

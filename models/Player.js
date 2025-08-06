@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-
-    const Player = sequelize.define('Player', {
+        return sequelize.define('Player', {
         userId: {
             type: DataTypes.UUID,
             primaryKey: true,
@@ -59,22 +58,25 @@ module.exports = (sequelize, DataTypes) => {
         dob:{
             type: DataTypes.DATE,
             allowNull: true
+        },
+        email:{
+            type: DataTypes.STRING,
+            allowNull: true,
+            validate: {
+                isEmail: true,
+                unique: true,
+            }
         }
 
     }, {
-        tableName: 'players',
+        tableName: 'player',
         timestamps: true,
         updatedAt: 'updatedAt',
         createdAt: 'createdAt',
-    });
 
-    Player.associate = (models) => {
-        Player.belongsTo(models.User, {
-            foreignKey: 'userId',
-            as: 'user',
-            onDelete: 'CASCADE'
+
+
         });
-    };
 
-    return Player;
+
 };

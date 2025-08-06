@@ -1,4 +1,6 @@
 const {Roles} = require("./Roles");
+const User = require("../models/User");
+const Player = require("./Player");
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('User', {
         id: {
@@ -30,7 +32,17 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true,
             updatedAt: 'updatedAt',
             createdAt: 'createdAt',
-        }
-    );
+        },
+    //
+    //     User.associate = (models) => {
+    //         User.hasOne(Player, {
+    //         foreignKey: 'userId',
+    //         onDelete: 'CASCADE',
+    //         onUpdate: 'CASCADE'
+    // })
+    // }
+
+);
+
 };
 

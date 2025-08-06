@@ -34,6 +34,12 @@ class CoachRepository{
     async findAllPlayers(){
         return await Player.findAll();
     }
+    async findById(id){
+        return await Coach.findById(id);
+    }
+    async save(coachData){
+        return await Coach.save(coachData);
+    }
 }
 
 module.exports = {

@@ -1,18 +1,18 @@
-const{verifyJwtToken} = '../utils/jwtTokenUtils'
+const { verifyJwtToken } = require('../utils/jwtTokenUtils');
 
-export const authenticate = async (req, reply) => {
+const authenticate = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    if(!authHeader || !authHeader.startsWith('Bearer ')) {
-        return reply.status(401).json({message:"No token provided"});
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "No token provided" });
     }
     const token = authHeader.split('Bearer ')[1];
-
     try {
-        req.user = verifyJwtToken(token, process.env.JWT_SECRET);
+        const decoded = verifyJwtToken(token, process.env.JWT_SECRET);
+        req.userId = decoded.id;
+        next();
     } catch (err) {
-        return reply.status(401).json({ message: 'Unauthorized: Invalid token' });
-    }
+        console.error('JWT verification error:', err.message);
+        return res.status(401).json({ message: 'Unauthorized: Invalid token' });}
 };
-
-module.exports = {authenticate};
+module.exports = authenticate;

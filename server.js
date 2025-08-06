@@ -3,9 +3,11 @@ require('dotenv').config();
 
 const sequelize = require('./config/database');
 const userRoutes = require('./routes/userRoute');
+const playerRoutes = require('./routes/playerRoute');
 
 // Initialize models
 const User = require('./models/User');
+const Player = require('./models/Player');
 
 // Initialize express
 const app = express();
@@ -14,8 +16,10 @@ app.use(express.json());
 
 // Register routes
 const userController = require('./controller/authController');
+const playerController = require('./controller/playerController');
 
 app.use('/api/users', userRoutes(userController));
+app.use('/api/players', playerRoutes(playerController));
 app.use(express.urlencoded({ extended: true }));
 
 // Health check

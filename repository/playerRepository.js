@@ -1,8 +1,8 @@
 const sequelize = require('../config/database');
 const { DataTypes } = require('sequelize');
-const {Scout} = require("../models/Scout")(sequelize, DataTypes);
-const {Player} = require('../models/Player')(sequelize, DataTypes);
-const {Coach} = require('../models/Coach')(sequelize, DataTypes);
+const Scout = require("../models/Scout")(sequelize, DataTypes);
+const Player = require('../models/Player')(sequelize, DataTypes);
+const Coach = require('../models/Coach')(sequelize, DataTypes);
 
 class PlayerRepository{
     async findByUsername(username) {
@@ -31,6 +31,12 @@ class PlayerRepository{
     }
     async viewCoachById(id){
         return await Coach.findById(id);
+    }
+    async findById(id){
+        return await Player.findById(id);
+    }
+    async save(){
+        return await Player.save();
     }
 }
 
