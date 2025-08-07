@@ -1,20 +1,37 @@
 const {Roles} = require("./Roles");
 module.exports = (sequelize, DataTypes) => {
 
-    const Coach = sequelize.define('Coach', {
-        userId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            allowNull: false,
-            unique: true,
-            references: {
-                model: 'users',
-                key: 'id'
+    return sequelize.define('Coach', {
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true
             },
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
+
+        email :{
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+                isEmail: true,
+                unique: true,
+                is: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            }
         },
 
+        password :{
+                type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+                len: [8, 20],
+                is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            }
+        },
+        username :{
+                type: DataTypes.STRING,
+            allowNull: true,
+        },
         fullName :{
             type: DataTypes.STRING,
             allowNull: true,
@@ -28,9 +45,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         experienceYears:{
             type: DataTypes.STRING,
+            allowNull: true,
         },
         phone:{
             type: DataTypes.STRING,
+            allowNull: true,
         },
         age:{
             type: DataTypes.STRING,
@@ -54,16 +73,6 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'coach',
             timestamps: true,
             updatedAt: 'updatedAt',
-            createdAt: 'createdAt',
         });
-
-    Coach.associate = (models) => {
-        Coach.belongsTo(models.User, {
-                foreignKey: 'userId',
-                as: 'user',
-                onDelete: 'CASCADE'
-        });
-};
-    return Coach;
 
 }

@@ -1,7 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    const ShortList = sequelize.define('ShortList', {
+    return sequelize.define('ShortList', {
         id: {
             type: DataTypes.UUID,
+            defaultValue:DataTypes.UUIDV4,
             primaryKey: true,
             allowNull: false,
         },
@@ -23,22 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         tableName: 'shortlists',
-        timestamps: false,
+        timestamps: true,
     });
 
-    ShortList.associate = (models) => {
-        ShortList.belongsTo(models.Scout, {
-            foreignKey: 'scoutId',
-            as: 'scout',
-            onDelete: 'CASCADE',
-        });
-
-        ShortList.belongsTo(models.Player, {
-            foreignKey: 'playerId',
-            as: 'player',
-            onDelete: 'CASCADE',
-        });
-    };
-
-    return ShortList;
 };

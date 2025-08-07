@@ -2,10 +2,9 @@ const {playerRepository} = require("../repository/playerRepository")
 const {userRepository} = require("../repository/userRepository")
 
 
-const createPlayerProfile = async (playerId,playerData) => {
+const createPlayerProfile = async (playerData) => {
 
         try {
-            playerData.userId = playerId;
             const newPlayer = await playerRepository.create(playerData);
             return {
                 status: 201,

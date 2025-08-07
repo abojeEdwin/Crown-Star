@@ -1,13 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 
-const sequelize = require('./config/database');
+const {sequelize, User, Scout, Coach, ShortList,Player} = require('./models');
 const userRoutes = require('./routes/userRoute');
 const playerRoutes = require('./routes/playerRoute');
-
-// Initialize models
-const User = require('./models/User');
-const Player = require('./models/Player');
 
 // Initialize express
 const app = express();

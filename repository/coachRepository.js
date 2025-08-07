@@ -13,6 +13,9 @@ class CoachRepository{
     async updateCoach(coachData){
         return await Coach.update(coachData);
     }
+    async findByEmail(email){
+        return await Coach.findOne({where: {email}});
+    }
     async findCoachById(id){
         return await Coach.findById(id);
     }

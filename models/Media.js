@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'scout',
             timestamps: true,
             updatedAt: 'updatedAt',
-            createdAt: 'createdAt',
+
         });
 
 }

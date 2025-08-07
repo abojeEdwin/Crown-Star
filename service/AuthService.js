@@ -4,6 +4,9 @@ const { isValidEmail } = require("../utils/emailUtils");
 const { generateJwtToken } = require("../utils/jwtTokenUtils");
 const {User} = require("../models/User")
 const { COACH,PLAYER,SCOUT,Roles} = require("../models/Roles");
+const {coachRepository} = require("../repository/coachRepository");
+const {playerRepository} = require("../repository/playerRepository");
+const {scoutRepository} = require("../repository/scoutRepository");
 
 
 
@@ -24,17 +27,27 @@ const registerUser = async (userData) => {
 
         const hashedPassword = await hashPassword(userData.password);
 
-        const userToCreate = {email: userData.email, role: selectedRole, password: hashedPassword,};
-        const createdUser = await userRepository.createUser(userToCreate);
+        const userToCreate = {email: userData.email, role: selectedRole, password: hashedPassword};
 
-        const token = generateJwtToken(createdUser.id);
+        if(userToCreate.role === Roles.COACH)
+            const createdCoach =  await coachRepository.createCoach(userToCreate);
+        if(userToCreate.role === Roles.PLAYER)
+            const createdPlayer = await playerRepository.create(userToCreate);
+        if(userToCreate.role === Roles.SCOUT)
+            const createdScout = await scoutRepository.createScout(userToCreate);
+
+
+        const createdUser = await userRepository.createUser(userToCreate);
+        const token = generateJwtToken(createdUser.email);
         return {
             status: 201,
             data: {
                 message: 'User registered successfully',
                 success: true,
                 token,
-                user: {id: createdUser.id, role: createdUser.role, email: createdUser.email}}};
+                user: {role: createdUser.role, email: createdUser.email}
+            }
+        };
 
     } catch (err) {
         console.error('Registration error:', err);
@@ -57,7 +70,7 @@ const loginUser = async ({ email, password }) => {
     if (!isPasswordValid) {
         return { status: 401, data: {message: 'Invalid password'}};}
 
-    const token = generateJwtToken(user.id);
+    const token = generateJwtToken(email);
     return {
         status: 200,
         data: {
@@ -65,7 +78,6 @@ const loginUser = async ({ email, password }) => {
             success: true,
             token,
             user: {
-                id: user.id,
                 role: user.role,
                 email: user.email
             }

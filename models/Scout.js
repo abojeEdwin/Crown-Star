@@ -1,18 +1,31 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Scout = sequelize.define('Scout', {
-        userId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            allowNull: false,
-            unique: true,
-            references: {
-                model: 'users',
-                key: 'id'
+    return sequelize.define('Scout', {
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true
             },
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
-        },
+            email :{
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true,
+                    isEmail: true,
+                    unique: true,
+                    is: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+                }
+            },
+
+            password :{
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true,
+                    len: [8, 20],
+                    is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                }
+            },
         fullName :{
             type: DataTypes.STRING,
             allowNull: true,
@@ -34,26 +47,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        createdAt : {
-            type: DataTypes.DATE,
-            allowNull: true,
-        }
     },
         {
             tableName: 'scout',
             timestamps: true,
             updatedAt: 'updatedAt',
-            createdAt: 'createdAt',
         });
-
-    Scout.associate = (models) => {
-        Scout.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-
-        Scout.hasMany(models.ShortList, {
-            foreignKey: 'scoutId',
-            as: 'shortlistedPlayers'
-        });
-    };
-    return Scout;
-
 }

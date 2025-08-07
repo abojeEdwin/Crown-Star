@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Message = sequelize.define('Message', {
+    return sequelize.define('Message', {
         id: {
             type: DataTypes.UUID,
             primaryKey: true
@@ -24,10 +24,4 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true
     });
 
-    Message.associate = (models) => {
-        Message.belongsTo(models.Chat, { foreignKey: 'chatId' });
-        Message.belongsTo(models.User, { foreignKey: 'senderId' });
-    };
-
-    return Message;
 };

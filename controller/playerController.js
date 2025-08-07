@@ -6,7 +6,6 @@ const createPlayerProfile = async (req, res) => {
     try{
         // const userId = req.user.id;
         const result = await playerService.createPlayerProfile({
-            userId: req.playerId,
             fullName: req.body.fullName,
             username: req.body.username,
             position: req.body.position,
