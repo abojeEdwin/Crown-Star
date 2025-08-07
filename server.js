@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 
 const {sequelize, User, Scout, Coach, ShortList,Player} = require('./models');
-const userRoutes = require('./routes/userRoute');
 const playerRoutes = require('./routes/playerRoute');
 
 // Initialize express
@@ -11,10 +10,8 @@ app.use(express.json());
 
 
 // Register routes
-const userController = require('./controller/authController');
 const playerController = require('./controller/playerController');
 
-app.use('/api/users', userRoutes(userController));
 app.use('/api/players', playerRoutes(playerController));
 app.use(express.urlencoded({ extended: true }));
 

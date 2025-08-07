@@ -64,9 +64,9 @@ const loginCoach = async ({ email, password }) => {
     };
 };
 
-const updateCoachProfile = async (id,coachData) => {
+const updateCoachProfile = async (coachData) => {
     try {
-        const coach = await coachRepository.findById(id);
+        const coach = await coachRepository.findById(coachData.id);
         if (!coach) {
             return{status: 404,data:{message:'Coach not found'}
             }

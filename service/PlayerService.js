@@ -1,10 +1,7 @@
 const {playerRepository} = require("../repository/playerRepository")
-const {userRepository} = require("../repository/userRepository")
 const {isValidEmail} = require("../utils/emailUtils");
 const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
-const {coachRepository} = require("../repository/coachRepository");
-const {scoutRepository} = require("../repository/scoutRepository");
 const {generateJwtToken} = require("../utils/jwtTokenUtils");
 
 const registerPlayer = async (playerData) => {
@@ -18,11 +15,9 @@ const registerPlayer = async (playerData) => {
                 status: 400,
                 data: {message: 'Player already exists'}};}
 
-        const registeredRole = Roles.PLAYER;
-
         const hashedPassword = await hashPassword(playerData.password);
 
-        const playerToCreate = {email: playerData.email, role: registeredRole, password: hashedPassword};
+        const playerToCreate = {email: playerData.email, role: Roles.PLAYER, password: hashedPassword};
 
 
         const createdPlayer = await playerRepository.create(playerToCreate);
@@ -33,7 +28,7 @@ const registerPlayer = async (playerData) => {
                 message: 'Player registered successfully',
                 success: true,
                 token,
-                user: {role: createdPlayer.role, email: createdPlayer.email}
+                user: {role: Roles.PLAYER, email: createdPlayer.email, id: createdPlayer.id}
             }
         };
 
@@ -72,14 +67,13 @@ const loginPlayer = async ({ email, password }) => {
     };
 };
 
-const updatePlayerProfile = async (playerId,playerData) => {
+const updatePlayerProfile = async (playerData) => {
         try {
-            const player = await playerRepository.findById(playerId);
+            const player = await playerRepository.findById(playerData.id);
             if (!player) {
                 return{status: 404,data:{message:'Player not found'}
                 }
             }
-            Object.assign(player, playerData);
             const updatedPlayer = await playerRepository.save(player);
             return {status: 204, updatedPlayer, data:{message:'Player profile updated successfully'}};
         } catch (error) {

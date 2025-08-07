@@ -12,7 +12,7 @@ class PlayerRepository{
         return await Player.create(playerData);
     }
     async findByEmail(email) {
-        return await Player.findOne(email)
+        return await Player.findOne({where:{email}})
     }
     async getPlayer(id){
         return await Player.findById(id);

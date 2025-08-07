@@ -13,19 +13,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notEmpty: true,
-                isEmail: true,
-                unique: true,
-                is: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
             }
         },
-
         password :{
                 type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true,
-                len: [8, 20],
-                is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
             }
         },
         username :{
@@ -73,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'coach',
             timestamps: true,
             updatedAt: 'updatedAt',
+            createdAt: 'createdAt',
         });
 
 }
