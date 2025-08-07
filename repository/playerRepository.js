@@ -11,6 +11,9 @@ class PlayerRepository{
     async create(playerData) {
         return await Player.create(playerData);
     }
+    async findByEmail(email) {
+        return await Player.findOne(email)
+    }
     async getPlayer(id){
         return await Player.findById(id);
     }

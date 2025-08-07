@@ -1,20 +1,71 @@
-const {ScoutRepository} = require('../repository/scoutRepository');
-const {playerRepository} = require("../repository/playerRepository");
+const {ScoutRepository, scoutRepository} = require('../repository/scoutRepository');
+const {isValidEmail} = require("../utils/emailUtils");
+const {Roles} = require("../models/Roles");
+const {hashPassword, comparePassword} = require("../utils/passwordUtils");
+const {generateJwtToken} = require("../utils/jwtTokenUtils");
 
-const createScoutProfile = async (scoutData) => {
+const registerScout = async (scoutData) => {
     try {
-        const newScout = await ScoutRepository.createScout(scoutData);
+        if (!isValidEmail(scoutData.email)) {
+            return { status: 400, data: { message: 'Invalid email format' } };
+        }
+        const existingScout = await scoutRepository.findByEmail(scoutData.email);
+        if (existingScout) {
+            return {
+                status: 400,
+                data: {message: 'Scout already exists'}};
+        }
+
+        const registeredRole = Roles.SCOUT;
+        const hashedPassword = await hashPassword(scoutData.password);
+        const scoutToCreate = {email: scoutData.email, role: registeredRole, password: hashedPassword};
+
+
+        const createdScout = await scoutRepository.createScout(scoutToCreate);
+        const token = generateJwtToken(createdScout.email);
         return {
             status: 201,
-            newScout,
-            data:{message:'Scout profile created successfully'
+            data: {
+                message: 'Scout registered successfully',
+                success: true,
+                token,
+                user: {role: createdScout.role, email: createdScout.email}
             }
         };
-    } catch (error) {
+
+    } catch (err) {
+        console.error('Registration error:', err);
         return {
-            status: 500,data:{message:'Error creating scout profile:', error: error.message}
-        };
+            status: 500,
+            data: {message: 'Internal server error', error: err.message}};}
+};
+
+
+const loginScout = async ({ email, password }) => {
+    if (!isValidEmail(email)) {
+        return { status: 400, data: { message: 'Invalid email format' } };
     }
+    const scout = await scoutRepository.findByEmail(email);
+    if (!scout) {
+        return { status: 404, data: { message: 'Scout not found'}};
+    }
+    const isPasswordValid = await comparePassword(password, scout.password);
+    if (!isPasswordValid) {
+        return { status: 401, data: {message: 'Invalid password'}};}
+
+    const token = generateJwtToken(email);
+    return {
+        status: 200,
+        data: {
+            message: 'Login successful',
+            success: true,
+            token,
+            user: {
+                role: scout.role,
+                email: scout.email
+            }
+        }
+    };
 };
 
 const updateScoutProfile = async (id,scoutData) => {
@@ -48,3 +99,6 @@ const viewScoutProfile = async (id) => {
         };
     }
 };
+
+
+module.exports = {registerScout, loginScout, updateScoutProfile, viewScoutProfile};

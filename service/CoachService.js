@@ -99,3 +99,7 @@ const viewCoachProfile = async (id) => {
         };
     }
 };
+
+
+
+module.exports = {registerCoach, loginCoach, updateCoachProfile, viewCoachProfile};
