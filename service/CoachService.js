@@ -26,7 +26,10 @@ const registerCoach = async (coachData) => {
                 message: 'Coach registered successfully',
                 success: true,
                 token,
-                user: {role: Roles.COACH, email: createdCoach.email, id: coachToCreate.id},
+                user: {
+                    role: Roles.COACH,
+                    email: createdCoach.email,
+                    id: createdCoach.id},
             }
         };
     } catch (err) {
@@ -63,9 +66,9 @@ const loginCoach = async ({ email, password }) => {
     };
 };
 
-const updateCoachProfile = async (coachData) => {
+const updateCoachProfile = async (coachId,coachData) => {
     try {
-        const coach = await coachRepository.findById(coachData.id);
+        const coach = await coachRepository.findById(coachId);
         if (!coach) {
             return{status: 404,data:{message:'Coach not found'}
             }
@@ -73,7 +76,7 @@ const updateCoachProfile = async (coachData) => {
         if(coach.role !== Roles.COACH)
             return {status: 403,data:{message:'Unauthorized access'}};
 
-        const updatedCoach = await coachRepository.save(coachData);
+        const updatedCoach = await coachRepository.saveCoach(coachId,coachData);
         return {status: 204, updatedCoach, data:{message:'Coach profile updated successfully'}};
     } catch (error) {
         return {status: 500,data:{message:'Error updating coach:',error: error.message}
@@ -90,7 +93,10 @@ const viewCoachProfile = async (id) => {
         }
         if(coach.role !== Roles.COACH)
             return {status: 403,data:{message:'Unauthorized access'}};
-        return coach;
+        return {
+            status: 200,
+            data: coach
+        };
     }catch(error){
         return {
             status: 500,

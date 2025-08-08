@@ -28,18 +28,18 @@ const login = async (req, res) => {
 
 const updatePlayer = async (req, res) => {
     try{
-        const result = await playerService.updatePlayerProfile({
-            position: req.body.position,
-            height: req.body.height,
-            location: req.body.location,
-            weight: req.body.weight,
-            username: req.body.username,
-            fullName: req.body.fullName,
-            phone: req.body.phone,
-            clubName: req.body.clubName,
-            age: req.body.age,
-            bio: req.body.bio,
-            dob: req.body.dob,
+        const result = await playerService.updatePlayerProfile(req.params.id,{
+                position: req.body.position,
+                height: req.body.height,
+                location: req.body.location,
+                weight: req.body.weight,
+                userName: req.body.userName,
+                fullName: req.body.fullName,
+                phone: req.body.phone,
+                clubTeam: req.body.clubTeam,
+                age: req.body.age,
+                bio: req.body.bio,
+                dob: req.body.dob,
         });
         return res.status(result.status).json(result.data);
     }catch(error){
@@ -50,9 +50,7 @@ const updatePlayer = async (req, res) => {
 
 const viewPlayer = async (req, res) => {
     try{
-        const result = await playerService.viewPlayerProfile({
-            id: req.params.id,
-        });
+        const result = await playerService.viewPlayerProfile(req.params.id);
         return res.status(result.status).json(result.data);
     }catch(error){
         console.error('View error:', error);

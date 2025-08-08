@@ -14,12 +14,6 @@ class PlayerRepository{
     async findByEmail(email) {
         return await Player.findOne({where:{email}})
     }
-    async getPlayer(id){
-        return await Player.findById(id);
-    }
-    async updatePlayer(id, playerData){
-        return await Player.update(id, playerData);
-    }
     async findAllPlayer(){
         return await Player.findAll();
     }
@@ -36,10 +30,14 @@ class PlayerRepository{
         return await Coach.findById(id);
     }
     async findById(id){
-        return await Player.findById(id);
+        return await Player.findByPk(id);
     }
-    async save(){
-        return await Player.save();
+    async findPlayerById(id){
+        return await Player.findByPk(id);
+    }
+    async savePlayer(id, playerData){
+        await Player.update(playerData, { where: { id } });
+        return await Player.findByPk(id);
     }
 }
 

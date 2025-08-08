@@ -17,11 +17,22 @@ class ScoutRepository{
          return await Scout.findAll();
      }
      async findScoutById(id){
-         return await Scout.findById(id);
+         return await Scout.findOne(id);
      }
      async findAllPlayers(){
          return await Player.findAll();
      }
+     async findById(id){
+         return await Scout.findByPk(id);
+     }
+     async findPlayerById(id){
+         return await Player.findByPk(id);
+     }
+    saveScout = async (id, scoutData) => {
+        await Scout.update(scoutData, { where: { id } });
+        return await Scout.findOne({ where: { id } });
+    };
+
 }
 module.exports = {
    scoutRepository : new ScoutRepository()

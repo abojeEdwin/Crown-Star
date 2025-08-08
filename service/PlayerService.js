@@ -67,14 +67,14 @@ const loginPlayer = async ({ email, password }) => {
     };
 };
 
-const updatePlayerProfile = async (playerData) => {
+const updatePlayerProfile = async (id,playerData) => {
         try {
-            const player = await playerRepository.findById(playerData.id);
+            const player = await playerRepository.findById(id);
             if (!player) {
                 return{status: 404,data:{message:'Player not found'}
                 }
             }
-            const updatedPlayer = await playerRepository.save(player);
+            const updatedPlayer = await playerRepository.savePlayer(id,playerData);
             return {status: 204, updatedPlayer, data:{message:'Player profile updated successfully'}};
         } catch (error) {
             return {status: 500,data:{message:'Error updating player:',error: error.message}}
@@ -83,14 +83,17 @@ const updatePlayerProfile = async (playerData) => {
 
 const viewPlayerProfile = async (playerId) => {
     try{
-        const player = await playerRepository.findById(playerId);
+        const player = await playerRepository.findPlayerById(playerId);
         if (!player) {
             return {status: 404,data:{message:'Player not found'}
             }
         }
         if(player.role !== Roles.PLAYER)
             return {status: 403,data:{message:'Unauthorized access'}};
-        return player;
+        return {
+            status: 200,
+            data: player
+        };
     }catch(error){
         return {
             status: 500,

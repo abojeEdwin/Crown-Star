@@ -1,4 +1,4 @@
-const {ScoutRepository, scoutRepository} = require('../repository/scoutRepository');
+const {scoutRepository} = require('../repository/scoutRepository');
 const {isValidEmail} = require("../utils/emailUtils");
 const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
@@ -67,14 +67,14 @@ const loginScout = async ({ email, password }) => {
     };
 };
 
-const updateScoutProfile = async (scoutData) => {
+const updateScoutProfile = async (id,scoutData) => {
     try {
-        const scout = await ScoutRepository.findById(scoutData.id);
+        const scout = await scoutRepository.findById(id);
         if (!scout) {
             return{status: 404,data:{message:'Scout not found'}
             }
         }
-        const updatedScout = await ScoutRepository.save(scoutData);
+        const updatedScout = await scoutRepository.saveScout(id,scoutData);
         return {status: 204, updatedScout, data:{message:'Scout profile updated successfully'}};
     } catch (error) {
         return {status: 500,data:{message:'Error updating scout:',error: error.message}
@@ -82,15 +82,18 @@ const updateScoutProfile = async (scoutData) => {
     }
 };
 
-const viewScoutProfile = async (id) => {
+const viewScoutProfile = async (scoutId) => {
     try{
-        const scout = await ScoutRepository.findById(id);
+        const scout = await scoutRepository.findScoutById(scoutId);
         if (!scout) {
             return {status: 404,data:{message:'Scout not found'}
             }
         }
-        if(scout.role !== Roles.SCOUT)return {status: 403,data:{message:'Unauthorized access'}}
-        return scout;
+        if(scout.role !== Roles.SCOUT)
+            return {status: 403,data:{message:'Unauthorized access'}}
+        return {
+            status: 200,
+            data: scout};
     }catch(error){
         return {
             status: 500,

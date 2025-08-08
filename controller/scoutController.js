@@ -9,7 +9,7 @@ const registerScout = async (req, res) => {
         });
         return res.status(result.status).json(result.data);
     }catch(error){
-        return res.status(500).json({message: error.message});
+        return res.status(500).json({error:'Internal server error'});
     }
 };
 
@@ -27,12 +27,13 @@ const loginScout = async (req, res) => {
 
 const updateScoutProfile = async (req, res) => {
     try{
-        const result = await scoutService.updateScoutProfile({
+        const result = await scoutService.updateScoutProfile(req.params.id,{
             fullName: req.body.fullName,
             userName: req.body.userName,
-            organization: req.body.organization,
+            organisation: req.body.organisation,
             bio: req.body.bio,
             location: req.body.location,
+
         });
         return res.status(result.status).json(result.data);
     }catch(error){

@@ -27,7 +27,7 @@ const login = async (req, res) => {
 
 const updateCoach = async (req, res) => {
     try{
-        const result = await coachService.updateCoachProfile({
+        const result = await coachService.updateCoachProfile(req.params.id,{
             userName: req.body.userName,
             fullName: req.body.fullName,
             teamName: req.body.teamName,
@@ -45,9 +45,7 @@ const updateCoach = async (req, res) => {
 
 const viewCoach = async (req, res) => {
     try{
-        const result = await coachService.viewCoachProfile({
-            id: req.params.id,
-        })
+        const result = await coachService.viewCoachProfile(req.params.id)
         return res.status(result.status).json(result.data);
     }catch(error){
         return res.status(500).json({ error: 'Internal server error' });
