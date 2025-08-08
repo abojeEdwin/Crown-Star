@@ -8,8 +8,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     logging: true
 });
 
-// Import models after sequelize initialization
-const models = require('../models');  // Adjust path as needed
+const models = require('../models');
 
 sequelize.authenticate()
     .then(() => {

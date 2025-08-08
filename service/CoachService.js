@@ -15,9 +15,8 @@ const registerCoach = async (coachData) => {
                 status: 400,
                 data: {message: 'Coach already exists'}};}
 
-        const registeredRole = Roles.COACH;
         const hashedPassword = await hashPassword(coachData.password);
-        const coachToCreate = {email: coachData.email, role: registeredRole, password: hashedPassword};
+        const coachToCreate = {email: coachData.email, role: Roles.COACH, password: hashedPassword};
 
         const createdCoach = await coachRepository.createCoach(coachToCreate);
         const token = generateJwtToken(createdCoach.email);
@@ -27,7 +26,7 @@ const registerCoach = async (coachData) => {
                 message: 'Coach registered successfully',
                 success: true,
                 token,
-                user: {role: createdCoach.role, email: createdCoach.email}
+                user: {role: Roles.COACH, email: createdCoach.email, id: coachToCreate.id},
             }
         };
     } catch (err) {
@@ -73,7 +72,7 @@ const updateCoachProfile = async (coachData) => {
         }
         if(coach.role !== Roles.COACH)
             return {status: 403,data:{message:'Unauthorized access'}};
-        Object.assign(coach, coachData);
+
         const updatedCoach = await coachRepository.save(coachData);
         return {status: 204, updatedCoach, data:{message:'Coach profile updated successfully'}};
     } catch (error) {

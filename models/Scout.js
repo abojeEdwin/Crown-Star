@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true,
             }
         },
+        userName:{
+                type: DataTypes.STRING,
+            allowNull: true,
+        },
 
         organisation : {
             type: DataTypes.STRING,

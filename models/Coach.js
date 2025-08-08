@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true,
             }
         },
-        username :{
+        userName :{
                 type: DataTypes.STRING,
             allowNull: true,
         },
@@ -52,11 +52,6 @@ module.exports = (sequelize, DataTypes) => {
         bio:{
             type: DataTypes.STRING,
             allowNull: true
-        },
-        role:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: Roles.COACH,
         },
         dob:{
             type: DataTypes.DATE,

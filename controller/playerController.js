@@ -1,7 +1,4 @@
 const playerService = require('../service/PlayerService');
-const {loginPlayer, updatePlayerProfile, viewPlayerProfile} = require("../service/PlayerService");
-
-
 
 const registerPlayer = async (req, res) => {
     try {
@@ -18,7 +15,7 @@ const registerPlayer = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const result = await loginPlayer({
+        const result = await playerService.loginPlayer({
             email: req.body.email,
             password: req.body.password,
         });
@@ -31,7 +28,7 @@ const login = async (req, res) => {
 
 const updatePlayer = async (req, res) => {
     try{
-        const result = await updatePlayerProfile({
+        const result = await playerService.updatePlayerProfile({
             position: req.body.position,
             height: req.body.height,
             location: req.body.location,
@@ -53,7 +50,7 @@ const updatePlayer = async (req, res) => {
 
 const viewPlayer = async (req, res) => {
     try{
-        const result = await viewPlayerProfile({
+        const result = await playerService.viewPlayerProfile({
             id: req.params.id,
         });
         return res.status(result.status).json(result.data);
@@ -62,8 +59,6 @@ const viewPlayer = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-
 module.exports = {
     registerPlayer,
     login,

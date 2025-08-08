@@ -1,8 +1,10 @@
 const express = require('express');
 require('dotenv').config();
 
-const {sequelize, User, Scout, Coach, ShortList,Player} = require('./models');
+const {sequelize, Scout, Coach, ShortList,Player} = require('./models');
 const playerRoutes = require('./routes/playerRoute');
+const coachRoutes = require('./routes/coachRoute');
+const scoutRoutes = require('./routes/scoutRoute');
 
 // Initialize express
 const app = express();
@@ -11,8 +13,12 @@ app.use(express.json());
 
 // Register routes
 const playerController = require('./controller/playerController');
+const coachController = require('./controller/coachController');
+const scoutController = require('./controller/scoutController');
 
-app.use('/api/players', playerRoutes(playerController));
+app.use('/api/player', playerRoutes(playerController));
+app.use('/api/coach', coachRoutes(coachController));
+app.use('/api/scout', scoutRoutes(scoutController));
 app.use(express.urlencoded({ extended: true }));
 
 // Health check

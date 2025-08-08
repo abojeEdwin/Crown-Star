@@ -16,9 +16,8 @@ const registerScout = async (scoutData) => {
                 data: {message: 'Scout already exists'}};
         }
 
-        const registeredRole = Roles.SCOUT;
         const hashedPassword = await hashPassword(scoutData.password);
-        const scoutToCreate = {email: scoutData.email, role: registeredRole, password: hashedPassword};
+        const scoutToCreate = {email: scoutData.email, role: Roles.SCOUT, password: hashedPassword};
 
 
         const createdScout = await scoutRepository.createScout(scoutToCreate);
@@ -29,15 +28,15 @@ const registerScout = async (scoutData) => {
                 message: 'Scout registered successfully',
                 success: true,
                 token,
-                user: {role: createdScout.role, email: createdScout.email}
+                user: {role: Roles.SCOUT, email: createdScout.email, id: createdScout.id}
             }
         };
 
-    } catch (err) {
-        console.error('Registration error:', err);
+    } catch (error) {
+        console.error('Registration error:', error);
         return {
             status: 500,
-            data: {message: 'Internal server error', error: err.message}};}
+            data: {message: 'Internal server error', error: error.message}};}
 };
 
 
@@ -68,14 +67,13 @@ const loginScout = async ({ email, password }) => {
     };
 };
 
-const updateScoutProfile = async (id,scoutData) => {
+const updateScoutProfile = async (scoutData) => {
     try {
-        const scout = await ScoutRepository.findById(id);
+        const scout = await ScoutRepository.findById(scoutData.id);
         if (!scout) {
             return{status: 404,data:{message:'Scout not found'}
             }
         }
-        Object.assign(scout, scoutData);
         const updatedScout = await ScoutRepository.save(scoutData);
         return {status: 204, updatedScout, data:{message:'Scout profile updated successfully'}};
     } catch (error) {
@@ -91,6 +89,7 @@ const viewScoutProfile = async (id) => {
             return {status: 404,data:{message:'Scout not found'}
             }
         }
+        if(scout.role !== Roles.SCOUT)return {status: 403,data:{message:'Unauthorized access'}}
         return scout;
     }catch(error){
         return {

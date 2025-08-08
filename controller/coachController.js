@@ -1,9 +1,8 @@
-const {registerCoach, loginCoach, updateCoachProfile} =  require('../service/CoachService');
-
+const coachService = require('../service/CoachService');
 
 const register = async (req, res) => {
     try{
-        const result = await registerCoach({
+        const result = await coachService.registerCoach({
             email: req.body.email,
             password: req.body.password,
             role: req.body.role
@@ -16,7 +15,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try{
-        const result = await loginCoach({
+        const result = await coachService.loginCoach({
             email: req.body.email,
             password: req.body.password,
         })
@@ -28,12 +27,31 @@ const login = async (req, res) => {
 
 const updateCoach = async (req, res) => {
     try{
-        const result = await updateCoachProfile({
-
+        const result = await coachService.updateCoachProfile({
+            userName: req.body.userName,
+            fullName: req.body.fullName,
+            teamName: req.body.teamName,
+            experienceYears: req.body.experienceYears,
+            phone: req.body.phone,
+            age: req.body.age,
+            bio: req.body.bio,
+            dob: req.body.dob,
         })
+        return res.status(result.status).json(result.data);
+    }catch(error){
+        return res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
+const viewCoach = async (req, res) => {
+    try{
+        const result = await coachService.viewCoachProfile({
+            id: req.params.id,
+        })
+        return res.status(result.status).json(result.data);
+    }catch(error){
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-
-module.exports = {register,login};
+module.exports = {register,login,updateCoach,viewCoach};
