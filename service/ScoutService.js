@@ -3,6 +3,8 @@ const {isValidEmail} = require("../utils/emailUtils");
 const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
 const {generateJwtToken} = require("../utils/jwtTokenUtils");
+const cloudinary = require("../config/cloudinary");
+const {playerRepository} = require("../repository/playerRepository");
 
 const registerScout = async (scoutData) => {
     try {
@@ -103,4 +105,24 @@ const viewScoutProfile = async (scoutId) => {
 };
 
 
-module.exports = {registerScout, loginScout, updateScoutProfile, viewScoutProfile};
+async function uploadProfilePicture(scoutId, filePath){
+    try{
+        const result = await cloudinary.uploader.upload(filePath,{
+            folder: 'scout_profiles',
+            resource_type:'image',
+        });
+        await scoutRepository.saveScout(
+            scoutId,
+            { 'profilePicture': result.secure_url }
+        );
+        return{status : 200 ,data:result.secure_url};
+    }catch(error){
+        return {
+            status: 500,
+            data:{message:'Error uploading image:',error: error.message}
+        }
+    }
+}
+
+
+module.exports = {registerScout, loginScout, updateScoutProfile, viewScoutProfile, uploadProfilePicture,};
