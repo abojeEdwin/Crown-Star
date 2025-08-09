@@ -4,7 +4,6 @@ const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
 const {generateJwtToken} = require("../utils/jwtTokenUtils");
 const cloudinary = require("../config/cloudinary");
-const Player = require("../models/Player");
 
 const registerPlayer = async (playerData) => {
     try {
