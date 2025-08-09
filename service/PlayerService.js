@@ -3,6 +3,8 @@ const {isValidEmail} = require("../utils/emailUtils");
 const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
 const {generateJwtToken} = require("../utils/jwtTokenUtils");
+const cloudinary = require("../config/cloudinary");
+const Player = require("../models/Player");
 
 const registerPlayer = async (playerData) => {
     try {
@@ -102,10 +104,29 @@ const viewPlayerProfile = async (playerId) => {
     }
 };
 
+async function uploadProfilePicture(playerId, filePath){
+    try{
+        const result = await cloudinary.uploader.upload(filePath,{
+            folder: 'player_profiles',
+            resource_type:'image',
+        });
+
+        await playerRepository.savePlayer({where:{id:playerId}},{profilePicture:result});
+        //await Player.update({where:{id:playerId}}).exec();
+        return{status : 204 ,data:result}
+    }catch(error){
+        return {
+            status: 500,
+            data:{message:'Error uploading image:',error: error.message}
+        }
+    }
+};
+
 module.exports = {
     registerPlayer,
     loginPlayer,
     updatePlayerProfile,
     viewPlayerProfile,
+    uploadProfilePicture,
 }
 

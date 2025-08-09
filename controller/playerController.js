@@ -1,4 +1,5 @@
 const playerService = require('../service/PlayerService');
+const upload = require('../middleware/upload');
 
 const registerPlayer = async (req, res) => {
     try {
@@ -57,9 +58,24 @@ const viewPlayer = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+const uploadProfilePicture = async (req, res) => {
+    try {
+        const imageUrl = req.file.path;
+        res.status(200).json({
+            message: 'Profile picture uploaded successfully',
+            imageUrl,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Upload failed', error: err.message });
+    }
+};
+
 module.exports = {
     registerPlayer,
     login,
     updatePlayer,
     viewPlayer,
+    uploadProfilePicture,
 }
