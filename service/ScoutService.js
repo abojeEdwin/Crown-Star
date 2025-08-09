@@ -63,7 +63,8 @@ const loginScout = async ({ email, password }) => {
             token,
             user: {
                 role: scout.role,
-                email: scout.email
+                email: scout.email,
+                id: scout.id,
             }
         }
     };

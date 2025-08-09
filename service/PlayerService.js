@@ -62,7 +62,8 @@ const loginPlayer = async ({ email, password }) => {
             token,
             user: {
                 role: player.role,
-                email: player.email
+                email: player.email,
+                id: player.id,
             }
         }
     };

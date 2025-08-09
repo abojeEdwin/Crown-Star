@@ -62,7 +62,8 @@ const loginCoach = async ({ email, password }) => {
             token,
             user: {
                 role: coach.role,
-                email: coach.email
+                email: coach.email,
+                id: coach.id,
             }
         }
     };
@@ -110,7 +111,7 @@ const viewCoachProfile = async (id) => {
 async function uploadProfilePicture(coachId, filePath){
     try{
         const result = await cloudinary.uploader.upload(filePath,{
-            folder: 'scout_profiles',
+            folder: 'coach_profiles',
             resource_type:'image',
         });
         await coachRepository.saveCoach(
