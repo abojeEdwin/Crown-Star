@@ -113,7 +113,7 @@ async function uploadProfilePicture(playerId, filePath){
         await playerRepository.savePlayer(
              playerId,
             { 'profilePicture': result.secure_url }
-        );();
+        );
         return{status : 200 ,data:result.secure_url};
     }catch(error){
         return {
