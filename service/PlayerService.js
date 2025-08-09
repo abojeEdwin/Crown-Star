@@ -110,17 +110,18 @@ async function uploadProfilePicture(playerId, filePath){
             folder: 'player_profiles',
             resource_type:'image',
         });
-
-        await playerRepository.savePlayer({where:{id:playerId}},{profilePicture:result});
-        //await Player.update({where:{id:playerId}}).exec();
-        return{status : 204 ,data:result}
+        await playerRepository.savePlayer(
+             playerId,
+            { 'profilePicture': result.secure_url }
+        );();
+        return{status : 200 ,data:result.secure_url};
     }catch(error){
         return {
             status: 500,
             data:{message:'Error uploading image:',error: error.message}
         }
     }
-};
+}
 
 module.exports = {
     registerPlayer,
