@@ -12,6 +12,5 @@ module.exports = (controller)=>{
     router.post('/:id/profile-picture',authenticate,
         upload.single('profilePicture'), controller.uploadProfilePicture);
 
-
     return router;
 };

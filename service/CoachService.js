@@ -3,6 +3,8 @@ const {isValidEmail} = require("../utils/emailUtils");
 const {Roles} = require("../models/Roles");
 const {hashPassword, comparePassword} = require("../utils/passwordUtils");
 const {generateJwtToken} = require("../utils/jwtTokenUtils");
+const cloudinary = require("../config/cloudinary");
+const {scoutRepository} = require("../repository/scoutRepository");
 
 const registerCoach = async (coachData) => {
     try {
@@ -105,6 +107,25 @@ const viewCoachProfile = async (id) => {
     }
 };
 
+async function uploadProfilePicture(coachId, filePath){
+    try{
+        const result = await cloudinary.uploader.upload(filePath,{
+            folder: 'scout_profiles',
+            resource_type:'image',
+        });
+        await coachRepository.saveCoach(
+            coachId,
+            { 'profilePicture': result.secure_url }
+        );
+        return{status : 200 ,data:result.secure_url};
+    }catch(error){
+        return {
+            status: 500,
+            data:{message:'Error uploading image:',error: error.message}
+        }
+    }
+}
 
 
-module.exports = {registerCoach, loginCoach, updateCoachProfile, viewCoachProfile};
+
+module.exports = {registerCoach, loginCoach, updateCoachProfile, viewCoachProfile, uploadProfilePicture,};
