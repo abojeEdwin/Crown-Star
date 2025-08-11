@@ -10,11 +10,24 @@ const scoutRoutes = require('./routes/scoutRoute');
 
 
 
+
+
 // Initialize express
 const app = express();
 const server=http.createServer(app);
 
 app.use(express.json());
+
+// Register routes
+const playerController = require('./controller/playerController');
+const coachController = require('./controller/coachController');
+const scoutController = require('./controller/scoutController');
+
+app.use('/api/player', playerRoutes(playerController));
+app.use('/api/coach', coachRoutes(coachController));
+app.use('/api/scout', scoutRoutes(scoutController));
+app.use(express.urlencoded({ extended: true }));
+
 
 // Socket.IO setup
 const io = new Server(server, {
