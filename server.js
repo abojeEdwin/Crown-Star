@@ -1,15 +1,53 @@
 const express = require('express');
 require('dotenv').config();
+const{Server} = require('socket.io');
+const http = require('http');
 
-const {sequelize, Scout, Coach, ShortList,Player} = require('./models');
+const {sequelize, Scout, Coach, ShortList,Player,Message} = require('./models');
 const playerRoutes = require('./routes/playerRoute');
 const coachRoutes = require('./routes/coachRoute');
 const scoutRoutes = require('./routes/scoutRoute');
 
 // Initialize express
 const app = express();
+const server=http.createServer(app);
+
 app.use(express.json());
 
+// Socket.IO setup
+const io = new Server(server, {
+    cors: {
+        origin: "*", // or your frontend URL
+        methods: ["GET", "POST"]
+    }
+ });
+ io.on('connection', (socket) => {
+     console.log('User connected:', socket.id);
+     socket.on('disconnect', () => {
+         console.log('User disconnected:', socket.id);
+     });
+ });
+ server.listen(3000, () => console.log('Server running on port 3000'));
+
+
+
+io.on('connection', (socket) => {
+    console.log('User connected:', socket.id);
+    socket.on('sendMessage', async (data) => {
+        try {
+            const message = await Message.create({
+                senderId: data.senderId,
+                receiverId: data.receiverId,
+                content: data.content,
+                chatId: data.chatId,
+                read: data.read = false,
+            });
+            io.emit('receiveMessage', message);
+        } catch (err) {
+            console.error(err);
+        }
+    });
+});
 
 // Register routes
 const playerController = require('./controller/playerController');
