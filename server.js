@@ -48,7 +48,7 @@ const io = new Server(server, {
 app.get('/', (_req, res) => res.send('🚀 Task Manager API is running...'));
 
 // Start server and DB
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 26372;
 sequelize.authenticate()
     .then(() => {
         console.log('✅ Connected to Mysql server');
