@@ -68,6 +68,6 @@ sequelize.authenticate()
         return sequelize.sync();
     })
     .then(() => {
-        app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+        server.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
     })
     .catch((err) => console.error('❌ DB connection failed:', err));

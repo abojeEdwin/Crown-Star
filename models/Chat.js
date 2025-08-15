@@ -6,5 +6,4 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-
 };
