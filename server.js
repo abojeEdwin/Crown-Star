@@ -28,7 +28,7 @@ app.use('/api/player', playerRoutes(playerController));
 app.use('/api/coach', coachRoutes(coachController));
 app.use('/api/scout', scoutRoutes(scoutController));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5174' }));
 // Socket.IO setup
 const io = new Server(server, {
     cors: {
