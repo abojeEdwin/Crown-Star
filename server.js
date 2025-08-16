@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const{Server} = require('socket.io');
 const http = require('http');
+const cors = require('cors');
 
 const {sequelize, Scout, Coach, ShortList,Player,Message} = require('./models');
 const playerRoutes = require('./routes/playerRoute');
@@ -27,8 +28,7 @@ app.use('/api/player', playerRoutes(playerController));
 app.use('/api/coach', coachRoutes(coachController));
 app.use('/api/scout', scoutRoutes(scoutController));
 app.use(express.urlencoded({ extended: true }));
-
-
+app.use(cors());
 // Socket.IO setup
 const io = new Server(server, {
     cors: {
