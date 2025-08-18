@@ -28,12 +28,12 @@ app.use('/api/player', playerRoutes(playerController));
 app.use('/api/coach', coachRoutes(coachController));
 app.use('/api/scout', scoutRoutes(scoutController));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: 'http://localhost:5174' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
 // Socket.IO setup
 const io = new Server(server, {
     cors: {
-        origin: "*", // or your frontend URL
-        methods: ["GET", "POST"]
+        origin: 'http://localhost:5173', // or your frontend URL
+        methods: ["GET", "POST","PUT","DELETE"]
     }
  });
  io.on('connection', (socket) => {
