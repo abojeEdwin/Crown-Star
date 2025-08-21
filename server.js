@@ -30,7 +30,9 @@ const corsOptions = {
         } else {
             callback(new Error('Not allowed by CORS'));
         }
-    }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'],
 };
 
 app.use(cors(corsOptions));
