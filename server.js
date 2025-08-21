@@ -58,7 +58,6 @@ io.on('connection', (socket) => {
         try{
             const message = await Message.create({
                 senderId: data.senderId,
-                receiverId: data.receiverId,
                 content: data.content,
                 chatId: data.chatId,
                 read: false,
