@@ -18,7 +18,7 @@ const server=http.createServer(app);
 // IMPORTANT: CORS must be applied BEFORE routes to be effective.
 const allowedOrigins = [
     process.env.FRONTEND_URL, // Your deployed frontend URL from Render
-    'https://crown-star-frontend.vercel.app/',
+    'https://crown-star-frontend.vercel.app',
     'http://localhost:5174'  // Including both common dev ports
 ];
 
@@ -35,7 +35,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'],
 };
 
-app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
