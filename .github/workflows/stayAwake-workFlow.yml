@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Render App
-        run: curl -s https://your-render-app.onrender.com
+        run: curl -s https://crown-star.onrender.com/api
 
 
