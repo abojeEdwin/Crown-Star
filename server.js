@@ -19,6 +19,7 @@ const server=http.createServer(app);
 const allowedOrigins = [
     process.env.FRONTEND_URL, // Your deployed frontend URL from Render
     'https://crown-star-frontend.vercel.app',
+    'https://crown-star-frontend-git-main-edwins-projects-d5496d78.vercel.app',
     'http://localhost:5174'  // Including both common dev ports
 ];
 
