@@ -12,8 +12,12 @@ const sequelize = new Sequelize(
         port: process.env.DB_PORT,
         dialect: "mysql",
         dialectOptions: {
+            // ssl: {
+            //     ca: fs.readFileSync(__dirname + "/certs/ca.pem"),
+            // },
             ssl: {
-                ca: fs.readFileSync(__dirname + "/certs/ca.pem"),
+                require: true,
+                rejectUnauthorized: false,
             },
         },
         logging: false,
